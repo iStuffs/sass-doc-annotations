@@ -8,7 +8,8 @@ const app = new Vue({
         columns: [],
     },
     created() {
-        axios.get('/json/annotations.json')
+        const url = 'https://raw.githubusercontent.com/iStuffs/sass-doc-annotations/master/dist/json/annotations.json';
+        axios.get(url)
             .then((response) => {
                 // handle success
                 this.annotations = response.data.annotations
