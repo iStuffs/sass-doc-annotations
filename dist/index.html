@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sass-doc Annotations table</title>
+    <link rel="stylesheet" href="css/style.min.css">
+</head>
+  <body>
+    <main id="app">
+        <div class="wrapper">
+
+            <h1 class="main-title">Sass Doc</h1>
+
+            <div class="filters">
+                <strong class="filters__title">Filters</strong> :
+                <template v-for="(filter, index) in filters" class="filters">
+                    <a href="#" class="filter" @click="filterResults(filter); selectedFilter=index">#{filter}</a><template v-if="index !== filters.length - 1"> | </template>
+                </template>
+            </div>
+            <p class="state">#{filteredAnnotations.length} of #{annotations.length} annotations</p>
+            <table class="table-data">
+                <thead>
+                    <tr>
+                        <th v-for="column in columns">#{column}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(annotation, index) in filteredAnnotations">
+                        <td>#{annotation.Annotation}</td>
+                        <td>#{annotation.Description}</td>
+                        <td :class="boolClass(annotation.Multiple)">#{annotation.Multiple}</td>
+                        <td><strong>#{annotation.Default}</strong></td>
+                        <td><em>#{annotation.Aliases}</em></td>
+                        <td :class="boolClass(annotation.Autofilled)">#{annotation.Autofilled}</td>
+                        <td>#{annotation['Allowed on'].join(', ')}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script src="js/main.min.js"></script>
+</body>
+</html>
