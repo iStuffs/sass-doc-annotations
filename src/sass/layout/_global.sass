@@ -1,14 +1,20 @@
+body
+  color: $color-font
+main
+  margin-bottom: 144px
+  position: relative
+  z-index: 3
+  background-color: #fff
+
 .wrapper
-    max-width: 1200px
-    margin: 0 auto
+  max-width: 1200px
+  margin: 0 auto
+  padding-bottom: 60px
 
 .main-title
     text-align: center
     padding-bottom: 3rem
-
-.filters
-    text-align: center
-    padding-bottom: 1.5rem
+    color: $color-primary
 
 .state
     text-align: right
@@ -16,12 +22,15 @@
 
 .true
     color: #3adb76
+    text-align: center
 
 .false
     color: #cc4b37
+    text-align: center
 
 thead
     border-bottom: 1px solid #eee
+    color: $color-font-dark
 
 tbody tr:nth-of-type(even)
     background-color: #f2f2f2

@@ -65,6 +65,11 @@ function imgTask() {
         .pipe(gulp.dest('dist/img'));
 }
 
+function fontTask() {
+    return gulp.src('src/fonts/*.{svg,ttf,woff}')
+        .pipe(gulp.dest('dist/fonts'));
+}
+
 function compress() {
     return gulp.src('dist/**/*')
         .pipe(zip(`${process.env.npm_package_name}.zip`))
@@ -86,11 +91,12 @@ function refresh(done) {
 }
 
 /* default task and watch */
-gulp.task('watch', gulp.series(cssTask, jsTask, jsonTask, htmlTask, refresh, imgTask, () => {
+gulp.task('watch', gulp.series(cssTask, jsTask, jsonTask, htmlTask, refresh, imgTask, fontTask, () => {
     gulp.watch('./src/sass/**/*.{sass,scss}', gulp.series(cssTask));
     gulp.watch('./src/js/*.js', gulp.series(jsTask));
     gulp.watch('./src/json/*.json', gulp.series(jsonTask));
     gulp.watch('./src/*.html', gulp.series(htmlTask));
+    gulp.watch('src/fonts/*.{svg,ttf,woff}', gulp.series(fontTask));
     gulp.watch('./dist/*.html').on('change', browserSync.reload);
     gulp.watch('./dist/css/*.css').on('change', browserSync.reload);
     gulp.watch('./dist/js/*.js').on('change', browserSync.reload);
