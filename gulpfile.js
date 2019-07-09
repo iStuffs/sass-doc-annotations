@@ -26,7 +26,6 @@ function cssTask() {
         .pipe(gulpif(!argv.production, sourcemaps.init()))
         .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer({
-            browsers: ['last 6 versions'],
             cascade: false,
         }))
         .pipe(cleanCss({
