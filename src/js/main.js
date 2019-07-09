@@ -5,16 +5,18 @@ import { mapState, mapMutations, mapGetters } from 'vuex';
 import store from './store';
 
 import vFilters from './components/v-filters';
+import vState from './components/v-state';
 
 const app = new Vue({
     el: '#app',
     store,
     components: {
         vFilters,
+        vState,
     },
     computed: {
         ...mapState('annotations', ['annotations', 'filteredAnnotations']),
-        ...mapGetters('annotations', ['columns', 'annotationsLength', 'filteredAnnotationsLength']),
+        ...mapGetters('annotations', ['columns']),
         ...mapGetters('filters', ['selectedFilterLabel']),
     },
     watch: {

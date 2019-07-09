@@ -44736,6 +44736,33 @@ var template =
 
 /***/ }),
 
+/***/ "./src/js/components/v-state.js":
+/*!**************************************!*\
+  !*** ./src/js/components/v-state.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { if (i % 2) { var source = arguments[i] != null ? arguments[i] : {}; ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(arguments[i])); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(arguments[i], key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+var template =
+/* html */
+"\n<p class=\"state\">{{ filteredAnnotationsLength }} of {{ annotationsLength }} annotations</p>\n";
+/* harmony default export */ __webpack_exports__["default"] = ({
+  template: template,
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('annotations', ['columns', 'annotationsLength', 'filteredAnnotationsLength']))
+});
+
+/***/ }),
+
 /***/ "./src/js/main.js":
 /*!************************!*\
   !*** ./src/js/main.js ***!
@@ -44754,6 +44781,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store */ "./src/js/store/index.js");
 /* harmony import */ var _components_v_filters__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/v-filters */ "./src/js/components/v-filters.js");
+/* harmony import */ var _components_v_state__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/v-state */ "./src/js/components/v-state.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { keys.push.apply(keys, Object.getOwnPropertySymbols(object)); } if (enumerableOnly) keys = keys.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { if (i % 2) { var source = arguments[i] != null ? arguments[i] : {}; ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(arguments[i])); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(arguments[i], key)); }); } } return target; }
@@ -44766,13 +44794,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
   el: '#app',
   store: _store__WEBPACK_IMPORTED_MODULE_4__["default"],
   components: {
-    vFilters: _components_v_filters__WEBPACK_IMPORTED_MODULE_5__["default"]
+    vFilters: _components_v_filters__WEBPACK_IMPORTED_MODULE_5__["default"],
+    vState: _components_v_state__WEBPACK_IMPORTED_MODULE_6__["default"]
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapState"])('annotations', ['annotations', 'filteredAnnotations']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])('annotations', ['columns', 'annotationsLength', 'filteredAnnotationsLength']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])('filters', ['selectedFilterLabel'])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapState"])('annotations', ['annotations', 'filteredAnnotations']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])('annotations', ['columns']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])('filters', ['selectedFilterLabel'])),
   watch: {
     selectedFilterLabel: function selectedFilterLabel(value) {
       this.filterAnnotations(value);
