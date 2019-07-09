@@ -13,40 +13,57 @@
 
             <h1 class="main-title">Sass Doc</h1>
 
-            <div class="filters">
-                <strong class="filters__title">Filters</strong> :
-                <template v-for="(filter, index) in filters" class="filters">
-                    <a href="#" class="filter" :class="{'is-selected': selectedFilter===index}" @click="filterResults(filter); selectedFilter=index">#{filter}</a><template v-if="index !== filters.length - 1"> | </template>
-                </template>
-            </div>
-            <p class="state">#{filteredAnnotations.length} of #{annotations.length} annotations</p>
+            <v-filters></v-filters>
+
+            <p class="state">{{ filteredAnnotationsLength }} of {{ annotationsLength }} annotations</p>
+
             <table class="table-data">
+
                 <thead>
                     <tr>
-                        <th v-for="column in columns">#{column}</th>
+                        <th v-for="column in columns">{{ column }}</th>
                     </tr>
                 </thead>
+
                 <tbody>
                   <transition-group
                     name="custom-classes-transition"
                     enter-active-class="animated fadeInDown"
-                    leave-active-class="animated bounceOutRight">
-                    <tr v-for="(annotation, index) in filteredAnnotations" :key="`raw-${index}`">
+                    leave-active-class="animated bounceOutRight"
+                  >
+                    <tr
+                      v-for="(annotation, index) in filteredAnnotations"
+                      :key="'row-' + index"
+                    >
+                        <!-- Column Annotation -->
                         <td>
                           <div class="has-tooltip">
-                            <span class="tooltip">#{annotation.Description}</span>
-                            #{annotation.Annotation}
-                        </div> </td>
-                        <td>#{annotation.Description}</td>
-                        <td :class="boolClass(annotation.Multiple)">
-                          <div :class="annotation.Multiple === 'true' ? 'icon-true' : 'icon-false' ">
-                            <span>#{annotation.Multiple}</span>
+                            <span class="tooltip">{{ annotation.Description }}</span>
+                            {{ annotation.Annotation }}
                           </div>
                         </td>
-                        <td><strong>#{annotation.Default}</strong></td>
-                        <td><em>#{annotation.Aliases}</em></td>
-                        <td :class="[boolClass(annotation.Multiple), annotation.Multiple === 'true' ? 'icon-true' : 'icon-false' ]"><span>#{annotation.Autofilled}</span></td>
-                        <td>#{annotation['Allowed on'].join(', ')}</td>
+
+                        <!-- Column Description -->
+                        <td>{{ annotation.Description }}</td>
+
+                        <!-- Column Multiple -->
+                        <td :class="boolClass(annotation.Multiple)">
+                          <span :class="annotation.Multiple === 'true' ? 'icon-true' : 'icon-false'">{{ annotation.Multiple }}</span>
+                        </td>
+
+                        <!-- Column Default -->
+                        <td><strong>{{ annotation.Default }}</strong></td>
+
+                        <!-- Column Aliases -->
+                        <td><em>{{ annotation.Aliases }}</em></td>
+
+                        <!-- Column Autofilled -->
+                        <td :class="boolClass(annotation.Autofilled)">
+                          <span :class="annotation.Multiple === 'true' ? 'icon-true' : 'icon-false'">{{ annotation.Autofilled }}</span>
+                        </td>
+
+                        <!-- Column Allowed On -->
+                        <td>{{ displayAllowedOn(annotation['Allowed on']) }}</td>
                     </tr>
                   </transition-group>
                 </tbody>
@@ -60,7 +77,7 @@
         <a href="https://sass-lang.com/">Sass</a>
       </div>
       <div class="footer__copy">
-        <a href="">&copy; iStuffs</a>
+        <a href="https://github.com/istuffs/">&copy; iStuffs</a>
 
       </div>
     </footer>

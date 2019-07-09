@@ -1,24 +1,34 @@
-// import '@babel/polyfill';
+import '@babel/polyfill';
 import Vue from 'vue';
 import axios from 'axios';
+import { mapState, mapMutations, mapGetters } from 'vuex';
+import store from './store';
+
+import vFilters from './components/v-filters';
 
 const app = new Vue({
     el: '#app',
-    data: {
-        annotations: [],
-        filteredAnnotations: [],
-        filters: ['All', 'functions', 'mixins', 'placeholders', 'variables'],
-        selectedFilter: 0,
-        columns: [],
+    store,
+    components: {
+        vFilters,
+    },
+    computed: {
+        ...mapState('annotations', ['annotations', 'filteredAnnotations']),
+        ...mapGetters('annotations', ['columns', 'annotationsLength', 'filteredAnnotationsLength']),
+        ...mapGetters('filters', ['selectedFilterLabel']),
+    },
+    watch: {
+        selectedFilterLabel(value) {
+            this.filterAnnotations(value);
+        },
     },
     created() {
         const url = 'https://raw.githubusercontent.com/iStuffs/sass-doc-annotations/master/dist/json/annotations.json';
         axios.get(url)
             .then((response) => {
                 // handle success
-                this.annotations = response.data.annotations;
-                this.columns = Object.keys(this.annotations[0]).filter(column => (column !== 'Extra notes' && column !== 'Attribute'));
-                this.filteredAnnotations = this.annotations;
+                this.updateAnnotations(response.data.annotations);
+                this.updateFilteredAnnotations(this.annotations);
             })
             .catch((error) => {
                 // handle error
@@ -26,8 +36,14 @@ const app = new Vue({
             });
     },
     methods:{
+        ...mapMutations('filters', ['updateFilters']),
+        ...mapMutations('annotations', ['filterAnnotations', 'updateAnnotations', 'updateFilteredAnnotations']),
+
         boolClass(value) {
             return value;
+        },
+        displayAllowedOn(value) {
+            return Array.isArray(value) ? value.join(', ') : '';
         },
         filterResults(value) {
             const annotations = JSON.parse(JSON.stringify(this.annotations));
@@ -39,5 +55,4 @@ const app = new Vue({
             }
         },
     },
-    delimiters: ['#{', '}'],
 });
