@@ -1,0 +1,44 @@
+{
+    "ASSETS": {
+        "src": "**/*.{json,eot,otf,svg,ttf,woff,woff2}",
+        "dest": ""
+    },
+    "CSS": {
+        "src": "sass/**/*.{sass,scss}",
+        "dest": "css"
+    },
+    "DOC": {
+        "sassDocOptions" : {
+            "dest": "docs/sass/"
+        }
+    },
+    "ERROR": "Error: <%= error.message %>",
+    "HTML": {
+        "entries": "**/*.{html,hbs,handlebars}",
+        "src": "**/*.{html,hbs,handlebars}",
+        "dest": "",
+        "paniniOptions": {
+            "root": "/src/pages/",
+            "layouts": "/src/layouts/",
+            "partials": "/src/partials/",
+            "helpers": "/src/helpers/",
+            "data": "/src/data/"
+        }
+    },
+    "IMAGES": {
+        "src": "images/**/*.{gif,jpg,jpeg,png,svg}",
+        "dest": "images"
+    },
+    "JS": {
+        "entries": "js/main.js",
+        "src": "js/**/*.js",
+        "dest": "js/"
+    },
+    "PATH": {
+        "src": "src/",
+        "dest": "dist/"
+    },
+    "SERVER": {
+        "port": 8000
+    }
+}

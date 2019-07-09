@@ -1,104 +1,66 @@
-/* gulp plugins variables */
+/* Imports */
+const { series, parallel, watch } = require('gulp');
 
-const gulp         = require('gulp');
-const sass         = require('gulp-sass');
-const autoprefixer = require('gulp-autoprefixer');
-const rename       = require('gulp-rename');
-const cleanCss     = require('gulp-clean-css');
-const htmlMin      = require('gulp-htmlmin');
-const uglify       = require('gulp-uglify');
-const browserSync  = require('browser-sync');
-const sourcemaps   = require('gulp-sourcemaps');
-const imagemin     = require('gulp-imagemin');
-const babel        = require('gulp-babel');
-const plumber      = require('gulp-plumber');
-const notify       = require('gulp-notify');
-const zip          = require('gulp-zip');
-const rm           = require('rimraf');
-const gulpif       = require('gulp-if');
-const { argv }     = require('yargs');
+/* Configuration */
+const {
+    ASSETS,
+    CSS,
+    HTML,
+    IMAGES,
+    JS,
+    PATH,
+} = require('./tasks/config.json');
+const production = require('./tasks/helpers/mode');
 
-
-/* tasks declaration */
-function cssTask() {
-    return gulp.src('./src/sass/**/*.{sass,scss}')
-        .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
-        .pipe(gulpif(!argv.production, sourcemaps.init()))
-        .pipe(sass().on('error', sass.logError))
-        .pipe(autoprefixer({
-            cascade: false,
-        }))
-        .pipe(cleanCss({
-            compatibility: 'ie8',
-        }))
-        .pipe(rename((path) => { path.basename += '.min'; }))
-        .pipe(gulpif(!argv.production, sourcemaps.write('.')))
-        .pipe(gulp.dest('./dist/css'));
-}
-
-function htmlTask() {
-    return gulp.src('src/*.html')
-        .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
-        .pipe(gulpif(argv.production, htmlMin({ collapseWhitespace: true })))
-        .pipe(gulp.dest('dist'));
-}
-
-function jsTask() {
-    return gulp.src('./src/js/*.js')
-        .pipe(plumber({ errorHandler: notify.onError('Error: <%= error.message %>') }))
-        // .pipe(babel({ presets: ['env'] }))
-        .pipe(gulpif(argv.production, uglify()))
-        .pipe(rename((path) => { path.basename += '.min'; }))
-        .pipe(gulp.dest('./dist/js'));
-}
+/* Tasks */
+const {
+    archive,
+    assets,
+    browserReload,
+    clean,
+    css,
+    doc,
+    html,
+    images,
+    js,
+    paniniRefresh,
+    serve,
+} = require('./tasks');
 
 
-function jsonTask() {
-    return gulp.src('./src/json/*.json')
-        .pipe(gulp.dest('./dist/json'));
-}
+/* Archive */
+const archiveTask = series(archive);
 
-function imgTask() {
-    return gulp.src('src/img/*.{gif,jpg,png,svg,jpeg}')
-        .pipe(imagemin())
-        .pipe(gulp.dest('dist/img'));
-}
+/* Build */
+const buildTask = series(clean, parallel(assets, css, js, images, html));
 
-function fontTask() {
-    return gulp.src('src/fonts/*.{svg,ttf,woff}')
-        .pipe(gulp.dest('dist/fonts'));
-}
+/* Doc */
+const docTask = series(doc);
 
-function compress() {
-    return gulp.src('dist/**/*')
-        .pipe(zip(`${process.env.npm_package_name}.zip`))
-        .pipe(gulp.dest('./'));
-}
+/* Watching */
+const watchTask = series(buildTask, serve, () => {
+    // assets
+    watch(PATH.src + ASSETS.src, series(assets))
+        .on('all', series(browserReload));
+    // css
+    watch(PATH.src + CSS.src, series(css))
+        .on('all', series(browserReload));
+    // html
+    watch(PATH.src + HTML.src)
+        .on('all', series(paniniRefresh, html, browserReload));
+    // images
+    watch(PATH.src + IMAGES.src, series(images))
+        .on('all', series(browserReload));
+    // javascript
+    watch(PATH.src + JS.src, series(js))
+        .on('all', series(browserReload));
+});
 
-function cleanDist(done) {
-    rm('./dist/', done);
-}
-
-function refresh(done) {
-    browserSync.init({
-        server: {
-            baseDir: './dist/',
-        },
-        port: '8080',
-    });
-    done();
-}
-
-/* default task and watch */
-gulp.task('watch', gulp.series(cssTask, jsTask, jsonTask, htmlTask, refresh, imgTask, fontTask, () => {
-    gulp.watch('./src/sass/**/*.{sass,scss}', gulp.series(cssTask));
-    gulp.watch('./src/js/*.js', gulp.series(jsTask));
-    gulp.watch('./src/json/*.json', gulp.series(jsonTask));
-    gulp.watch('./src/*.html', gulp.series(htmlTask));
-    gulp.watch('src/fonts/*.{svg,ttf,woff}', gulp.series(fontTask));
-    gulp.watch('./dist/*.html').on('change', browserSync.reload);
-    gulp.watch('./dist/css/*.css').on('change', browserSync.reload);
-    gulp.watch('./dist/js/*.js').on('change', browserSync.reload);
-}));
-
-gulp.task('default', gulp.series('watch'));
+/* Exports */
+module.exports = {
+    default: production ? series(buildTask) : series(watchTask),
+    archive: archiveTask,
+    build: buildTask,
+    doc: docTask,
+    watch: watchTask,
+};
