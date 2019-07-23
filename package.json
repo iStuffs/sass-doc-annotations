@@ -19,22 +19,22 @@
   "author": "iStuffs: Samuel DIDIER-LAURENT <istuffs@gmail.com> (https://istuffs.be)",
   "license": "CC-BY-NC-SA-4.0",
   "devDependencies": {
-    "@babel/core": "^7.5.0",
+    "@babel/core": "^7.5.5",
     "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.5.2",
-    "@babel/register": "^7.4.4",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
     "babel-loader": "^8.0.6",
     "browser-sync": "^2.26.7",
-    "css-loader": "^3.0.0",
-    "eslint": "^6.0.1",
+    "css-loader": "^3.1.0",
+    "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-import": "^2.18.2",
     "eyeglass": "^2.4.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^6.1.0",
     "gulp-clean-css": "^4.2.0",
     "gulp-htmlmin": "^5.0.1",
-    "gulp-if": "^2.0.2",
+    "gulp-if": "^3.0.0",
     "gulp-imagemin": "^6.0.0",
     "gulp-load-plugins": "^2.0.0",
     "gulp-notify": "^3.2.0",
@@ -48,19 +48,19 @@
     "sass-loader": "^7.1.0",
     "sassdoc": "^2.7.0",
     "vinyl-named": "^1.1.0",
-    "vue-loader": "^15.7.0",
+    "vue-loader": "^15.7.1",
     "vue-style-loader": "^4.1.2",
     "vuex": "^3.1.1",
-    "webpack": "^4.35.3",
+    "webpack": "^4.37.0",
     "webpack-stream": "^5.2.1",
-    "yargs": "^13.2.4"
+    "yargs": "^13.3.0"
   },
   "directories": {
     "doc": "docs"
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "vue": "^2.6.10"
   },
   "repository": {
