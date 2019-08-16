@@ -2,13 +2,19 @@ import { cloneDeep } from 'lodash';
 
 const state = {
     annotations: [{}],
-    filteredAnnotations: [{}],
 };
 
 const getters = {
-    filteredAnnotationsLength: state => state.filteredAnnotations.length,
-    annotationsLength: state => state.annotations.length,
-    columns: state => Object.keys(state.annotations[0]).filter(column => (column !== 'Extra notes' && column !== 'Attribute')),
+    annotationsLength: (state) => state.annotations.length,
+    columns: (state) => Object.keys(state.annotations[0]).filter((column) => (column !== 'Extra notes' && column !== 'Attribute')),
+    filteredAnnotations: (state, getters, rootState, rootGetters) => {
+        const selectedFilterLabel = rootGetters['filters/selectedFilterLabel'];
+        const annotations = cloneDeep(state.annotations);
+        return selectedFilterLabel !== undefined && selectedFilterLabel !== 'All'
+            ? annotations.filter((item) => item['Allowed on'].includes(selectedFilterLabel))
+            : annotations;
+    },
+    filteredAnnotationsLength: (state, getters) => getters.filteredAnnotations.length,
 };
 
 const mutations = {
@@ -17,12 +23,6 @@ const mutations = {
     },
     updateFilteredAnnotations: (state, array) => {
         state.filteredAnnotations = cloneDeep(array);
-    },
-    filterAnnotations: (state, value) => {
-        const annotations = cloneDeep(state.annotations);
-        state.filteredAnnotations = value !== undefined && value !== 'All'
-            ? annotations.filter(item => item['Allowed on'].includes(value))
-            : annotations;
     },
 };
 

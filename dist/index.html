@@ -8,78 +8,26 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
   <body>
-    <main id="app">
+    <div id="app">
+      <main>
         <div class="wrapper">
-
-            <h1 class="main-title">Sass Doc</h1>
-
-            <v-filters></v-filters>
-            <v-state></v-state>
-
-            <table class="table-data">
-
-                <thead>
-                    <tr>
-                        <th v-for="column in columns">{{ column }}</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                  <transition-group
-                    name="custom-classes-transition"
-                    enter-active-class="animated fadeInDown"
-                    leave-active-class="animated bounceOutRight"
-                  >
-                    <tr
-                      v-for="(annotation, index) in filteredAnnotations"
-                      :key="'row-' + index"
-                    >
-                        <!-- Column Annotation -->
-                        <td>
-                          <div class="has-tooltip">
-                            <span class="tooltip">{{ annotation.Description }}</span>
-                            {{ annotation.Annotation }}
-                          </div>
-                        </td>
-
-                        <!-- Column Description -->
-                        <td>{{ annotation.Description }}</td>
-
-                        <!-- Column Multiple -->
-                        <td :class="boolClass(annotation.Multiple)">
-                          <span :class="annotation.Multiple === 'true' ? 'icon-true' : 'icon-false'">{{ annotation.Multiple }}</span>
-                        </td>
-
-                        <!-- Column Default -->
-                        <td><strong>{{ annotation.Default }}</strong></td>
-
-                        <!-- Column Aliases -->
-                        <td><em>{{ annotation.Aliases }}</em></td>
-
-                        <!-- Column Autofilled -->
-                        <td :class="boolClass(annotation.Autofilled)">
-                          <span :class="annotation.Multiple === 'true' ? 'icon-true' : 'icon-false'">{{ annotation.Autofilled }}</span>
-                        </td>
-
-                        <!-- Column Allowed On -->
-                        <td>{{ displayAllowedOn(annotation['Allowed on']) }}</td>
-                    </tr>
-                  </transition-group>
-                </tbody>
-            </table>
-
+          <v-header></v-header>
+          <transition
+            name="custom-classes-transition" enter-active-class="animated fadeIn"
+            leave-active-class="animated fadeOut"
+          >
+            <div v-show=dataLoaded>
+              <v-filters></v-filters>
+              <v-status></v-status>
+              <v-table-data></v-table-data>
+            </div>
+          </transition>
         </div>
-    </main>
+      </main>
+      <v-footer></v-footer>
 
-    <footer class="footer">
-      <div class="footer__top">
-        <a href="http://sassdoc.com/">Sass doc</a> |
-        <a href="https://sass-lang.com/">Sass</a>
-      </div>
-      <div class="footer__copy">
-        <a href="https://github.com/istuffs/">&copy; iStuffs</a>
-      </div>
-    </footer>
+    </div>
+
     <script src="js/main.js"></script>
 </body>
 </html>

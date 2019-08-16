@@ -7,6 +7,6 @@ const template = /* html */ `
 export default {
     template,
     computed: {
-        ...mapGetters('annotations', ['columns', 'annotationsLength', 'filteredAnnotationsLength']),
+        ...mapGetters('annotations', ['annotationsLength', 'filteredAnnotationsLength']),
     },
 };
